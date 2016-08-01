@@ -3,7 +3,10 @@ require_once  'connMysql.php';
 //判斷是否已送出表單
 if (isset($_POST["action"]) && ($_POST["action"]=="join"))
 {
-    echo "ok";
+//    echo "ok";
+    //確認申請帳號是否已被註冊
+    $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" .$_POST["m_username"].  "'";
+    echo $query_RecFindUser;
 }
 
 ?>
