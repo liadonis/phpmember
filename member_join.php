@@ -8,12 +8,13 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
     $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" .$_POST["m_username"].  "'";
 //    echo $query_RecFindUser;
     $RecFindUser = mysqli_query($conn,$query_RecFindUser);
-    mysqli_close($conn);
     //判斷是否有相同的帳號，是否可被註冊
     if (mysqli_num_rows($RecFindUser)>0)
     {
 //        echo "此帳號已被註冊";
         //帳號已被註冊 以get方式回傳訊息到原本頁面 並顯示相關訊息
+        mysqli_close($conn);
+        mysqli_free_result($RecFindUser);
         header("Location: member_join.php?errMsg=1&username=".$_POST["m_username"]);
     }
     else{
@@ -29,7 +30,11 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
         $query_insert .="'".$_POST["m_phone"]."',";
         $query_insert .="'".$_POST["m_address"]."',";
         $query_insert .="NOW()".")";
-        echo $query_insert;
+//        echo $query_insert;
+        mysqli_query($conn,$query_insert);
+        mysqli_free_result($query_insert);
+        mysqli_close($conn);
+        header("Location: member_join.php?loginState=1");
 
 
     }
@@ -46,6 +51,12 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
 
 </head>
 <body>
+<?php if (isset($_GET["loginState"]) && ($_GET["loginState"]="1") ) {?>
+<script>
+    alert("加入會員成功\n請用您剛才申請的帳號與密碼登入。");
+    window.location.href = "index.php";
+</script>
+<?php } ?>
 
 <table width="780" border="0" align="center" cellpadding="4" cellspacing="0">
   <tr>
