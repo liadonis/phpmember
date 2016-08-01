@@ -1,22 +1,20 @@
 <?php
 require_once  'connMysql.php';
 //判斷是否已送出表單
-if (isset($_POST["action"]) && ($_POST["action"]=="join"))
-{
+if (isset($_POST["action"]) && ($_POST["action"]=="join")) {
 //    echo "ok";
     //確認申請帳號是否已被註冊
-    $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" .$_POST["m_username"].  "'";
+    $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" . $_POST["m_username"] . "'";
 //    echo $query_RecFindUser;
-    $RecFindUser = mysqli_query($conn,$query_RecFindUser);
+    $RecFindUser = mysqli_query($conn, $query_RecFindUser);
     //判斷是否有相同的帳號，是否可被註冊
-    if (mysqli_num_rows($RecFindUser)>0)
-    {
+    if (mysqli_num_rows($RecFindUser) > 0) {
 //        echo "此帳號已被註冊";
         //帳號已被註冊 以get方式回傳訊息到原本頁面 並顯示相關訊息
         mysqli_close($conn);
         mysqli_free_result($RecFindUser);
-        header("Location: member_join.php?errMsg=1&username=".$_POST["m_username"]);
-    }
+        header("Location: member_join.php?errMsg=1&username=" . $_POST["m_username"]);
+
         header("Location: member_join.php?errMsg=1&username=" . $_POST["m_username"]);
     } else {
 //        echo "此帳號可以註冊";
@@ -36,12 +34,8 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
         mysqli_free_result($query_insert);
         mysqli_close($conn);
         header("Location: member_join.php?loginState=1");
-
-
     }
-
 }
-
 ?>
 
 <html>
@@ -56,6 +50,19 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
                 alert("請填寫帳號");
                 document.formJoin.m_username.focus();
                 return false;
+            }else{
+                uid = document.formJoin.m_username.value;
+                if (uid.length < 5 || uid.length > 12)
+                {
+                    alert("帳號長度只能是5~12之間的英文字元");
+                    document.formJoin.m_username.focus();
+                    return false;
+                }
+                if (!(uid.charAt(0) >= 'a' && uid.charAt(0) <= 'z'))
+                {
+                    alert("帳號的第一個字只能是英文小寫字元");
+                    return false;
+                }
             }
         }
     </script>
