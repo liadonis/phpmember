@@ -6,7 +6,18 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
 //    echo "ok";
     //確認申請帳號是否已被註冊
     $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" .$_POST["m_username"].  "'";
-    echo $query_RecFindUser;
+//    echo $query_RecFindUser;
+    $RecFindUser = mysqli_query($conn,$query_RecFindUser);
+    mysqli_close($conn);
+    //判斷是否有相同的帳號，是否可被註冊
+    if (mysqli_num_rows($RecFindUser)>0)
+    {
+        echo "此帳號已被註冊";
+    }
+    else{
+        echo "此帳號可以註冊";
+    }
+
 }
 
 ?>
