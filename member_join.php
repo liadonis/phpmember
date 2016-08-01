@@ -1,3 +1,13 @@
+<?php
+require_once  'connMysql.php';
+//判斷是否已送出表單
+if (isset($_POST["action"]) && ($_POST["action"]=="join"))
+{
+    echo "ok";
+}
+
+?>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
