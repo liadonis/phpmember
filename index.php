@@ -66,7 +66,7 @@
           <hr size="1">
           <p class="heading">還沒有會員帳號?</p>
           <p>註冊帳號免費又容易</p>
-          <p align="right"><a href="">馬上申請會員</a></p>
+          <p align="right"><a href="member_join.php">馬上申請會員</a></p>
 
         </div>
         <div class="boxbl"></div><div class="boxbr"></div></td>
