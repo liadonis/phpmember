@@ -17,7 +17,21 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
         header("Location: member_join.php?errMsg=1&username=".$_POST["m_username"]);
     }
     else{
-        echo "此帳號可以註冊";
+//        echo "此帳號可以註冊";
+        $query_insert = "insert into `memberdata` (`m_name`,`m_username`,`m_passwd`,`m_sex`,`m_birthday`,`m_email`,`m_url`,`m_phone`,`m_address`,`m_jointime`) values (";
+        $query_insert .="'".$_POST["m_name"]."',";
+        $query_insert .="'".$_POST["m_username"]."',";
+        $query_insert .="'".md5($_POST["m_passwd"])."',";
+        $query_insert .="'".$_POST["m_sex"]."',";
+        $query_insert .="'".$_POST["m_birthday"]."',";
+        $query_insert .="'".$_POST["m_email"]."',";
+        $query_insert .="'".$_POST["m_url"]."',";
+        $query_insert .="'".$_POST["m_phone"]."',";
+        $query_insert .="'".$_POST["m_address"]."',";
+        $query_insert .="NOW()".")";
+        echo $query_insert;
+
+
     }
 
 }
