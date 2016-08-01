@@ -12,7 +12,9 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
     //判斷是否有相同的帳號，是否可被註冊
     if (mysqli_num_rows($RecFindUser)>0)
     {
-        echo "此帳號已被註冊";
+//        echo "此帳號已被註冊";
+        //帳號已被註冊 以get方式回傳訊息到原本頁面 並顯示相關訊息
+        header("Location: member_join.php?errMsg=1&username=".$_POST["m_username"]);
     }
     else{
         echo "此帳號可以註冊";
@@ -42,9 +44,9 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join"))
      <td class="tdrline">
      <form action="" method="POST" name="formJoin" id="formJoin" onSubmit="return checkForm();">
      <p class="title">加入會員</p>
-
-     <div class="errDiv">帳號 xxx 已經有人使用！</div>
-          
+<?php if (isset($_GET["errMsg"]) && ($_GET["errMsg"] == "1")) { ?>
+     <div class="errDiv">帳號 <?php echo $_GET["username"]; ?> 已經有人使用！</div>
+<?php } ?>
      <div class="dataDiv">
      <hr size="1">
      <p class="heading">帳號資料</p>
