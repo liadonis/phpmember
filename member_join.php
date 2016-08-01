@@ -61,7 +61,29 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join")) {
                 if (!(uid.charAt(0) >= 'a' && uid.charAt(0) <= 'z'))
                 {
                     alert("帳號的第一個字只能是英文小寫字元");
+                    document.formJoin.m_username.focus();
                     return false;
+                }
+                for (idx = 0; idx < uid.length ; idx++)
+                {
+                    if (uid.charAt(idx) >= 'A' && uid.charAt(idx) <= 'Z')
+                    {
+                        alert("帳號不可含有大寫英文字元");
+                        document.formJoin.m_username.focus();
+                        return false;
+                    }
+                    if (!((uid.charAt(idx) >= 'a' && uid.charAt(idx) <= 'z') || (uid.charAt(idx) <='9' ) || (uid.charAt(idx) == "_" ) ))
+                    {
+                        alert("帳號只能是數字，英文字母及「_」");
+                        document.formJoin.m_username.focus();
+                        return false;
+                    }
+                    if (uid.charAt(idx) == "_" && uid.charAt(idx+1) == "_" )
+                    {
+                        alert("「_」符號不可以相連!\n");
+                        document.formJoin.m_username.focus();
+                        return false;
+                    }
                 }
             }
         }
