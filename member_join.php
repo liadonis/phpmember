@@ -1,7 +1,7 @@
 <?php
-require_once  'connMysql.php';
+require_once 'connMysql.php';
 //判斷是否已送出表單
-if (isset($_POST["action"]) && ($_POST["action"]=="join")) {
+if (isset($_POST["action"]) && ($_POST["action"] == "join")) {
 //    echo "ok";
     //確認申請帳號是否已被註冊
     $query_RecFindUser = "select `m_username` from `memberdata` where `m_username` = '" . $_POST["m_username"] . "'";
@@ -34,6 +34,7 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join")) {
         mysqli_free_result($query_insert);
         mysqli_close($conn);
         header("Location: member_join.php?loginState=1");
+
     }
 }
 ?>
@@ -45,48 +46,76 @@ if (isset($_POST["action"]) && ($_POST["action"]=="join")) {
     <link href="style.css" rel="stylesheet" type="text/css">
     <script>
         function checkForm() {
-            if (document.formJoin.m_username.value == "")
-            {
+            if (document.formJoin.m_username.value == "") {
                 alert("請填寫帳號");
                 document.formJoin.m_username.focus();
                 return false;
-            }else{
+            } else {
                 uid = document.formJoin.m_username.value;
-                if (uid.length < 5 || uid.length > 12)
-                {
+                if (uid.length < 5 || uid.length > 12) {
                     alert("帳號長度只能是5~12之間的英文字元");
                     document.formJoin.m_username.focus();
                     return false;
                 }
-                if (!(uid.charAt(0) >= 'a' && uid.charAt(0) <= 'z'))
-                {
+                if (!(uid.charAt(0) >= 'a' && uid.charAt(0) <= 'z')) {
                     alert("帳號的第一個字只能是英文小寫字元");
                     document.formJoin.m_username.focus();
                     return false;
                 }
-                for (idx = 0; idx < uid.length ; idx++)
-                {
-                    if (uid.charAt(idx) >= 'A' && uid.charAt(idx) <= 'Z')
-                    {
+                for (idx = 0; idx < uid.length; idx++) {
+                    if (uid.charAt(idx) >= 'A' && uid.charAt(idx) <= 'Z') {
                         alert("帳號不可含有大寫英文字元");
                         document.formJoin.m_username.focus();
                         return false;
                     }
-                    if (!((uid.charAt(idx) >= 'a' && uid.charAt(idx) <= 'z') || (uid.charAt(idx) <='9' ) || (uid.charAt(idx) == "_" ) ))
-                    {
+                    if (!((uid.charAt(idx) >= 'a' && uid.charAt(idx) <= 'z') || (uid.charAt(idx) <= '9' ) || (uid.charAt(idx) == "_" ) )) {
                         alert("帳號只能是數字，英文字母及「_」");
                         document.formJoin.m_username.focus();
                         return false;
                     }
-                    if (uid.charAt(idx) == "_" && uid.charAt(idx+1) == "_" )
-                    {
+                    if (uid.charAt(idx) == "_" && uid.charAt(idx + 1) == "_") {
                         alert("「_」符號不可以相連!\n");
                         document.formJoin.m_username.focus();
                         return false;
                     }
                 }
             }
+            if (!(check_passwd(document.formJoin.m_passwd.value, document.formJoin.m_passwdrecheck.value))) {
+                document.formJoin.m_passwd.focus();
+                return false;
+            }
+            return confirm("確定送出嗎?");
+
         }
+
+        function check_passwd(pw1, pw2) {
+            if (pw1 == "")
+            {
+                alert("密碼不可以為空白!");
+                return false;
+            }
+            for (var idx = 0; idx < pw1.length; idx++)
+            {
+                if (pw1.charAt(idx) == " " || pw1.charAt(idx) =="\"") //這裡判斷空白的" "中間一定要有空格
+                {
+                    alert("密碼不可以含有空白與雙引號!\n");
+                    return false;
+                }
+                if (pw1.length < 5 || pw1.length > 10)
+                {
+                    alert("密碼長度為5到10個字母!\n");
+                    return false;
+                }
+                if (pw1 != pw2)
+                {
+                    alert("密碼二次輸入不一致，請重新輸入!\n");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
     </script>
 </head>
 <body>
