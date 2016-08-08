@@ -2,6 +2,11 @@
 require_once 'connMysql.php';
 session_start();
 
+//檢查會員是否已登入
+if (!isset($_SESSION['loginMember']) || $_SESSION['loginMember'] == " ") {
+    header("Location: index.php");
+}
+
 //登出
 if (isset($_GET['logout']) && $_GET['logout']=="true"){
     unset($_SESSION["loginMember"]);
@@ -10,7 +15,9 @@ if (isset($_GET['logout']) && $_GET['logout']=="true"){
 }
 
 $query_RecMember = "SELECT * FROM `memberdata` WHERE `m_username` = '".$_SESSION['loginMember']."'";
-echo $query_RecMember;
+$RecMember = mysqli_query($conn, $query_RecMember);
+mysqli_close($conn);
+$row_RecMember = mysqli_fetch_assoc($RecMember);
 
 
 ?>
@@ -70,11 +77,11 @@ echo $query_RecMember;
         <div class="boxtl"></div>
         <div class="boxtr"></div>
         <div class="regbox">
-        <p class="heading"><strong>會員系統</strong></p> 
-        <p><strong>XXXX</strong>您好。<br>
-        本次登入的時間為：<br>
-        XXXX</p>
-        <p align="center"><a href="">修改資料</a> | <a href="?logout=true">登出系統</a></p>
+            <p class="heading"><strong>會員系統</strong></p>
+            <p><strong><?php echo $row_RecMember['m_name']; ?></strong> 您好。</p>
+            <p>您總共登入了 <?php echo $row_RecMember['m_login']; ?> 次。<br>
+                本次登入的時間為：<br><?php echo $row_RecMember['m_logintime']; ?><br></p>
+            <p align="center"><a href="">修改資料</a> | <a href="?logout=true">登出系統</a></p>
         </div>
         <div class="boxbl"></div>
         <div class="boxbr"></div>

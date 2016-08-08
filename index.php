@@ -17,9 +17,7 @@ if (isset($_POST['username']) && isset($_POST['passwd'])) {
     $query_RecLogin = "SELECT * FROM `memberdata` WHERE `m_username` = '" . $_POST['username'] . "'";
 //    echo $query_RecLogin;
     $RecLogin = mysqli_query($conn, $query_RecLogin);
-    mysqli_close($conn);
     $row_RecLogin = mysqli_fetch_assoc($RecLogin);
-
 //    print_r($row_RecLogin);
     $username = $row_RecLogin['m_username'];
     $passwd = $row_RecLogin['m_passwd'];
@@ -32,14 +30,17 @@ if (isset($_POST['username']) && isset($_POST['passwd'])) {
         $query_ReLoginUpdate = "UPDATE `memberdata` SET `m_login`=`m_login`+1 , `m_logintime` = NOW() WHERE `m_username`='" . $_POST['username'] . "'";
 //        echo $query_ReLoginUpdate;
         mysqli_query($conn, $query_ReLoginUpdate);
-        mysqli_close($conn);
+//        mysqli_close($conn);     //如果之後的程式還有要連到資料庫，就不能關閉
+//        echo $query_ReLoginUpdate;
         $_SESSION['loginMember'] = $username;
         $_SESSION['memberlevel'] = $level;
+//        echo $_SESSION['loginMember']."session<br>";
 
         if (isset($_POST['rememberme']) && $_POST['rememberme'] == 'true') {
 
             setcookie("remUser", $_POST['username'], time() + 365 * 24 * 60);
             setcookie("remPass", $_POST['passwd'], time() + 365 * 24 * 60);
+//            echo $_COOKIE['remUser']."cookie<br>";
 
         } else {
             if (isset($_COOKIE['remUser'])) {
@@ -47,15 +48,14 @@ if (isset($_POST['username']) && isset($_POST['passwd'])) {
                 setcookie("remPass", $_POST['passwd'], time() - 100);
             }
         }
-
         if ($_SESSION["memberlevel"] == "member") {
             header("Location: member_center.php");
         } else {
             header("Location: member_admin.php");
         }
     } else {
-        unset($_SESSION["loginMember"]);
-        unset($_SESSION["memberlevel"]);
+        setcookie("remUser", $_POST['username'], time() - 100);
+        setcookie("remPass", $_POST['passwd'], time() - 100);
         header("Location: index.php?errMsg=1");
     }
 }
