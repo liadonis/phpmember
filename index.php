@@ -3,7 +3,7 @@ require_once 'connMysql.php';
 session_start();
 
 //檢查會員是否已登入
-if (isset($_SESSION['loginMember']) && $_SESSION['loginMember'] != " ") {
+if (isset($_SESSION['loginMember']) && $_SESSION['loginMember'] != "") {
     if ($_SESSION['memberlevel'] == "member") {
         header("Location: member_center.php");
     } else {
@@ -12,7 +12,7 @@ if (isset($_SESSION['loginMember']) && $_SESSION['loginMember'] != " ") {
 }
 
 
-if (isset($_POST['username']) && isset($_POST['passwd'])) {
+if (isset($_POST['username']) && isset($_POST['passwd']) && $_POST['username']!= "" && $_POST['passwd'] != "" ) {
 //    echo "get username & passwd";
     $query_RecLogin = "SELECT * FROM `memberdata` WHERE `m_username` = '" . $_POST['username'] . "'";
 //    echo $query_RecLogin;

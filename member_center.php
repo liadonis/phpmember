@@ -15,7 +15,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == "true") {
 }
 
 $query_RecMember = "SELECT * FROM `memberdata` WHERE `m_username` = '" . $_SESSION['loginMember'] . "'";
-  echo $query_RecMember;
+//  echo $query_RecMember;
 $RecMember = mysqli_query($conn, $query_RecMember);
 mysqli_close($conn);
 $row_RecMember = mysqli_fetch_assoc($RecMember);
