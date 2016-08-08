@@ -17,7 +17,9 @@ if (isset($_POST['username']) && isset($_POST['passwd'])) {
     $query_RecLogin = "SELECT * FROM `memberdata` WHERE `m_username` = '" . $_POST['username'] . "'";
 //    echo $query_RecLogin;
     $RecLogin = mysqli_query($conn, $query_RecLogin);
+    mysqli_close($conn);
     $row_RecLogin = mysqli_fetch_assoc($RecLogin);
+
 //    print_r($row_RecLogin);
     $username = $row_RecLogin['m_username'];
     $passwd = $row_RecLogin['m_passwd'];
@@ -30,7 +32,7 @@ if (isset($_POST['username']) && isset($_POST['passwd'])) {
         $query_ReLoginUpdate = "UPDATE `memberdata` SET `m_login`=`m_login`+1 , `m_logintime` = NOW() WHERE `m_username`='" . $_POST['username'] . "'";
 //        echo $query_ReLoginUpdate;
         mysqli_query($conn, $query_ReLoginUpdate);
-
+        mysqli_close($conn);
         $_SESSION['loginMember'] = $username;
         $_SESSION['memberlevel'] = $level;
 

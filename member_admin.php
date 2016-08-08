@@ -1,3 +1,19 @@
+<?php
+require_once 'connMysql.php';
+session_start();
+
+//登出
+if (isset($_GET['logout']) && $_GET['logout']=="true"){
+    unset($_SESSION["loginMember"]);
+    unset($_SESSION["memberlevel"]);
+    header("Location: index.php");
+}
+
+$query_RecMember = "SELECT * FROM `memberdata` WHERE `m_username` = '".$_SESSION['loginMember']."'";
+echo $query_RecMember;
+
+
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

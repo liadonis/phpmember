@@ -1,3 +1,23 @@
+<?php
+require_once 'connMysql.php';
+session_start();
+
+//登出
+if (isset($_GET['logout']) && $_GET['logout']=="true"){
+  unset($_SESSION["loginMember"]);
+  unset($_SESSION["memberlevel"]);
+  header("Location: index.php");
+}
+
+$query_RecMember = "SELECT * FROM `memberdata` WHERE `m_username` = '".$_SESSION['loginMember']."'";
+//  echo $query_RecMember;
+$RecMember = mysqli_query($conn,$query_RecMember);
+mysqli_close($conn);
+$row_RecMember = mysqli_fetch_assoc($RecMember);
+print_r($row_RecMember);
+
+?>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -41,7 +61,7 @@
         <p>您總共登入了 XXX 次。<br>
         本次登入的時間為：<br>
         XXXX</p>
-        <p align="center"><a href="">修改資料</a> | <a href="">登出系統</a></p>
+        <p align="center"><a href="">修改資料</a> | <a href="?logout=true">登出系統</a></p>
         </div>
         <div class="boxbl"></div>
         <div class="boxbr"></div></td>
