@@ -1,3 +1,41 @@
+<?php
+require_once 'connMysql.php';
+session_start();
+
+if (isset($_POST['username']) && isset($_POST['passwd'])){
+//    echo "get username & passwd";
+    $query_RecLogin = "SELECT * FROM `memberdata` WHERE `m_username` = '".$_POST['username']."'";
+//    echo $query_RecLogin;
+    $RecLogin = mysqli_query($conn,$query_RecLogin);
+    $row_RecLogin = mysqli_fetch_assoc($RecLogin);
+//    print_r($row_RecLogin);
+    $username = $row_RecLogin['m_username'];
+    $passwd = $row_RecLogin['m_passwd'];
+    $level = $row_RecLogin['m_level'];
+    
+    //比對密碼
+    if (md5($_POST['passwd'])==$passwd){
+//        echo "passwd ok";
+        //計算登入次數及更新時間
+        $query_ReLoginUpdate = "UPDATE `memberdata` SET `m_login`=`m_login`+1 , `m_logintime` = NOW() WHERE `m_username`='".$_POST['username']."'";
+//        echo $query_ReLoginUpdate;
+        mysqli_query($conn,$query_ReLoginUpdate);
+
+        $_SESSION['loginMember'] = $username;
+        $_SESSION['memberlevel'] = $level;
+
+        if ($_SESSION["memberlevel"]=="member"){
+            header("Location: member_center.php");
+        }else{
+            header("Location: member_admin.php");
+        }
+    }else {
+        unset($_SESSION["Name"]);
+        header("Location: index.php?errMsg=1");
+    }
+}
+
+?>
 <!DOCTYPE html><!-- 宣告文件類型 -->
 <html>
 <head>
@@ -41,7 +79,12 @@
         <div class="boxtl"></div>
         <div class="boxtr"></div>
         <div class="regbox">
-          <div class="errDiv"> 登入帳號或密碼錯誤！</div>
+            <?php
+                if (isset($_GET['errMsg']) && $_GET['errMsg']=1){
+            ?>
+                    <div class="errDiv"> 登入帳號或密碼錯誤！</div>
+            <?php } ?>
+
           <p class="heading">登入會員系統</p>
           <form name="form1" method="post" action="">
               <p>帳號：

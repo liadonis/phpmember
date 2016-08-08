@@ -25,7 +25,7 @@
         </tr>
 			
         <tr>
-        <td width="10%" align="center" bgcolor="#FFFFFF"><p><a href="member_adminupdate.php?id=<?php echo $row_RecMember["m_id"];?>">修改</a><br>
+<!--        <td width="10%" align="center" bgcolor="#FFFFFF"><p><a href="member_adminupdate.php?id=--><?php //echo $row_RecMember["m_id"];?><!--">修改</a><br>-->
         <a href="?action=delete&id=1" onClick="">刪除</a></p></td>
         <td width="20%" align="center" bgcolor="#FFFFFF"><p>NAME</p></td>
         <td width="20%" align="center" bgcolor="#FFFFFF"><p>USERNAME</p></td>

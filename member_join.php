@@ -183,7 +183,7 @@ if (isset($_POST["action"]) && ($_POST["action"] == "join")) {
                                 </p>
 
                                 <p><strong>電子郵件</strong>：
-                                    <input name="m_email" type="text" class="normalinput" id="m_email">
+                                    <input name="m_email" type="text" class="normalinput" id="m_email"/>
                                     <font color="#FF0000">*</font>
                                 </p>
 
