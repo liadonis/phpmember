@@ -24,13 +24,26 @@ if (isset($_POST['username']) && isset($_POST['passwd'])){
         $_SESSION['loginMember'] = $username;
         $_SESSION['memberlevel'] = $level;
 
+        if (isset($_POST['rememberme']) && $_POST['rememberme']=='true'){
+
+            setcookie("remUser",$_POST['username'],time()+365*24*60);
+            setcookie("remPass",$_POST['passwd'],time()+365*24*60);
+
+        }else{
+            if (isset($_COOKIE['remUser'])){
+                setcookie("remUser",$_POST['username'],time()-100);
+                setcookie("remPass",$_POST['passwd'],time()-100);
+            }
+        }
+
         if ($_SESSION["memberlevel"]=="member"){
             header("Location: member_center.php");
         }else{
             header("Location: member_admin.php");
         }
     }else {
-        unset($_SESSION["Name"]);
+        unset($_SESSION["loginMember"]);
+        unset($_SESSION["memberlevel"]);
         header("Location: index.php?errMsg=1");
     }
 }
@@ -87,15 +100,12 @@ if (isset($_POST['username']) && isset($_POST['passwd'])){
 
           <p class="heading">登入會員系統</p>
           <form name="form1" method="post" action="">
-              <p>帳號：
-              <br>
-              
-              <input name="username" type="text" class="logintextbox" id="username" value="">
-              </p>
-              <p>密碼：<br>
-              <input name="passwd" type="password" class="logintextbox" id="passwd" value="">
-              </p>
-         
+                  <p>帳號：<br>
+                      <input name="username" type="text" class="logintextbox" id="username" value="<?php if (isset($_COOKIE['remUser']))echo $_COOKIE['remUser']; ?>">
+                  </p>
+                  <p>密碼：<br>
+                      <input name="passwd" type="password" class="logintextbox" id="passwd" value="<?php if (isset($_COOKIE['remUser']))echo $_COOKIE['remPass']; ?>">
+                  </p>
               <p>
                 <input name="rememberme" type="checkbox" id="rememberme" value="true" checked>
                 記住我的帳號密碼。
